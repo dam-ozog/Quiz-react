@@ -10,6 +10,7 @@ function App() {
 	const [answeredQuestions, setAnsweredQuestions] = useState([]);
 	const [quizComplited, setQuizComplited] = useState(false);
 	const [questions, setQuestions] = useState([]);
+	const [visibleQuestions, setVisibleQuestions] = useState(true)
 
 	useEffect(() => {
 		fetch("http://localhost:5000/questions")
@@ -46,19 +47,26 @@ function App() {
 			<AddQuestion />
 			{currentQuestion && (
 				<div className='answers-container'>
-					<h3>{currentQuestion.question}</h3>
-					{currentQuestion.answers.map(answer => (
-						<div key={answer.answer} className='answers'>
+					{visibleQuestions && (
+
+						<>
+						<h3>{currentQuestion.question}</h3>
+						{currentQuestion.answers.map(answer => (
+							<div key={answer.answer} className='answers'>
 							<input
 								type='radio'
 								id={answer.answer}
 								name='answer'
 								value={answer.answer}
 								onChange={handleAnsweredChange}
-							/>
+								/>
 							<label htmlFor={answer.answer}>{answer.answer}</label>
 						</div>
 					))}
+					</>
+				)
+				}
+
 				</div>
 			)}
 			<Button
@@ -71,6 +79,8 @@ function App() {
 				setQuizComplited={setQuizComplited}
 				setAnsweredQuestions={setAnsweredQuestions}
 				answeredQuestions={answeredQuestions}
+				setScore={setScore}
+				setVisibleQuestions={setVisibleQuestions}
 			/>
 			<h3>
 				{quizComplited &&

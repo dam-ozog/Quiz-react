@@ -1,0 +1,109 @@
+{
+  "questions": [
+    {
+      "question": "Co żyje 100 lat?",
+      "answers": [
+        {
+          "answer": "Kot",
+          "value": false
+        },
+        {
+          "answer": "Człowiek",
+          "value": false
+        },
+        {
+          "answer": "Żółw",
+          "value": true
+        }
+      ],
+      "id": "3e25"
+    },
+    {
+      "question": "Co oddycha pod wodą?",
+      "answers": [
+        {
+          "answer": "Nietoperz",
+          "value": false
+        },
+        {
+          "answer": "Ryba",
+          "value": true
+        },
+        {
+          "answer": "Wilk",
+          "value": false
+        }
+      ],
+      "id": "be86"
+    },
+    {
+      "question": "20 + 20",
+      "answers": [
+        {
+          "answer": "40",
+          "value": true
+        },
+        {
+          "answer": "60",
+          "value": false
+        },
+        {
+          "answer": "35",
+          "value": false
+        }
+      ],
+      "id": "78ee"
+    },
+    {
+      "question": "Ile dni ma rok?",
+      "answers": [
+        {
+          "answer": "320",
+          "value": false
+        },
+        {
+          "answer": "365",
+          "value": true
+        },
+        {
+          "answer": "410",
+          "value": false
+        }
+      ]
+    },
+    {
+      "question": "Ile kół ma rower?",
+      "answers": [
+        {
+          "answer": "3",
+          "value": false
+        },
+        {
+          "answer": "2",
+          "value": true
+        },
+        {
+          "answer": "12",
+          "value": false
+        }
+      ]
+    },
+    {
+      "question": "Ile nóg ma słoń?",
+      "answers": [
+        {
+          "answer": "3",
+          "value": false
+        },
+        {
+          "answer": "6",
+          "value": false
+        },
+        {
+          "answer": "4",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

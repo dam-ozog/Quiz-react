@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { NextFinishButton } from '../NextFinishButton/NextFinishButton'
 
 const Button = ({
 	currentQuestionIndex,
@@ -10,10 +12,15 @@ const Button = ({
 	setQuizComplited,
 	setAnsweredQuestions,
 	answeredQuestions,
+	setScore,
+	setVisibleQuestions,
 }) => {
+	const [repeatQuiz, setRepeatQuiz] = useState(false);
+
 	const handleNextQuestion = () => {
 		const currentQuestion = questions[currentQuestionIndex];
 		checkAnswer();
+
 
 		setAnsweredQuestions([
 			...answeredQuestions,
@@ -30,15 +37,29 @@ const Button = ({
 		} else {
 			setQuizComplited(true);
 			setSelectedAnswer(null);
-			setCurrentQuestionIndex(0);
+			setVisibleQuestions(false);
+			setRepeatQuiz(true);
 		}
 	};
+
+	const handleRepeatQuiz = () => {
+		setRepeatQuiz(false);
+		setCurrentQuestionIndex(0);
+		setQuizComplited(false);
+		setScore(0);
+		setVisibleQuestions(true);
+	}
+	
 	return (
-		<button onClick={handleNextQuestion}>
+		<>
+		<NextFinishButton currentQuestionIndex={currentQuestionIndex} onClick={handleNextQuestion} questions={questions} />
+		{/* <button onClick={handleNextQuestion} disabled={currentQuestionIndex === false}>
 			{currentQuestionIndex === questions.length - 1
 				? "Zakończ quiz"
 				: "Następne pytanie"}
-		</button>
+		</button> */}
+		{repeatQuiz && <button onClick={handleRepeatQuiz}>Powtórz Quiz</button>}
+				</>
 	);
 };
 
@@ -52,6 +73,8 @@ Button.propTypes = {
 	setQuizComplited: PropTypes.func.isRequired,
 	setAnsweredQuestions: PropTypes.func.isRequired,
 	answeredQuestions: PropTypes.array.isRequired, // must be a function
+	setScore: PropTypes.func.isRequired,
+	setVisibleQuestions: PropTypes.func.isRequired,
 };
 
 export default Button;
