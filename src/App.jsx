@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Button from "./components/Button/Button";
+// import Button from "./components/Button/Button";
 import AddQuestion from "./components/AddQuestion/AddQuestion";
+import { ReapetQuizButton } from "./components/ReapetQuizButton/ReapetQuizButton";
+import { NextorFinishButton } from "./components/NextorFinishButton/NextorFinishButton";
 
 function App() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -10,7 +12,8 @@ function App() {
 	const [answeredQuestions, setAnsweredQuestions] = useState([]);
 	const [quizComplited, setQuizComplited] = useState(false);
 	const [questions, setQuestions] = useState([]);
-	const [visibleQuestions, setVisibleQuestions] = useState(true)
+	const [visibleQuestions, setVisibleQuestions] = useState(true);
+	const [repeatQuiz, setRepeatQuiz] = useState(false);
 
 	useEffect(() => {
 		fetch("http://localhost:5000/questions")
@@ -40,6 +43,38 @@ function App() {
 		}
 	};
 
+	const handleNextQuestion = () => {
+		const currentQuestion = questions[currentQuestionIndex];
+		handleCheckAnswer();
+
+		setAnsweredQuestions([
+			...answeredQuestions,
+			{
+				question: currentQuestion.question,
+				selectedAnswer: selectedAnswer,
+				correctAnswer: currentQuestion.answers.find(an => an.value === true),
+			},
+		]);
+
+		if (currentQuestionIndex < questions.length - 1) {
+			setCurrentQuestionIndex(currentQuestionIndex + 1);
+			setSelectedAnswer(null);
+		} else {
+			setQuizComplited(true);
+			setSelectedAnswer(null);
+			setVisibleQuestions(false);
+			setRepeatQuiz(true);
+		}
+	};
+
+	const handleRepeatQuiz = () => {
+		setRepeatQuiz(false);
+		setCurrentQuestionIndex(0);
+		setQuizComplited(false);
+		setScore(0);
+		setVisibleQuestions(true);
+	};
+
 	const currentQuestion = questions[currentQuestionIndex];
 	return (
 		<div className='quiz-container'>
@@ -48,28 +83,25 @@ function App() {
 			{currentQuestion && (
 				<div className='answers-container'>
 					{visibleQuestions && (
-
 						<>
-						<h3>{currentQuestion.question}</h3>
-						{currentQuestion.answers.map(answer => (
-							<div key={answer.answer} className='answers'>
-							<input
-								type='radio'
-								id={answer.answer}
-								name='answer'
-								value={answer.answer}
-								onChange={handleAnsweredChange}
-								/>
-							<label htmlFor={answer.answer}>{answer.answer}</label>
-						</div>
-					))}
-					</>
-				)
-				}
-
+							<h3>{currentQuestion.question}</h3>
+							{currentQuestion.answers.map(answer => (
+								<div key={answer.answer} className='answers'>
+									<input
+										type='radio'
+										id={answer.answer}
+										name='answer'
+										value={answer.answer}
+										onChange={handleAnsweredChange}
+									/>
+									<label htmlFor={answer.answer}>{answer.answer}</label>
+								</div>
+							))}
+						</>
+					)}
 				</div>
 			)}
-			<Button
+			{/* <Button
 				currentQuestionIndex={currentQuestionIndex}
 				questions={questions}
 				selectedAnswer={selectedAnswer}
@@ -81,7 +113,11 @@ function App() {
 				answeredQuestions={answeredQuestions}
 				setScore={setScore}
 				setVisibleQuestions={setVisibleQuestions}
-			/>
+			/> */}
+			<div>
+				<NextorFinishButton onClick={handleNextQuestion} currentQuestionIndex={currentQuestionIndex} questions={questions}/>
+				<ReapetQuizButton onClick={handleRepeatQuiz}/>
+			</div>
 			<h3>
 				{quizComplited &&
 					`Quiz zakończony ! Twój wynik to: ${score} na ${questions.length}`}

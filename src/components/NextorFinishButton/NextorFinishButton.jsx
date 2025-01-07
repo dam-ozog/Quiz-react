@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const NextFinishButton = ({
+export const NextorFinishButton = ({
 	currentQuestionIndex,
 	onClick,
 	questions,
@@ -14,7 +14,7 @@ export const NextFinishButton = ({
 	);
 };
 
-NextFinishButton.propTypes = {
+NextorFinishButton.propTypes = {
 	currentQuestionIndex: PropTypes.number.isRequired,
 	onClick: PropTypes.func.isRequired,
 	questions: PropTypes.array.isRequired,
