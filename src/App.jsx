@@ -4,6 +4,7 @@ import "./App.css";
 import AddQuestion from "./components/AddQuestion/AddQuestion";
 import { ReapetQuizButton } from "./components/ReapetQuizButton/ReapetQuizButton";
 import { NextorFinishButton } from "./components/NextorFinishButton/NextorFinishButton";
+import { DeleteQuestion } from "./components/DeleteQuestion/DeleteQuestion";
 
 function App() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -24,7 +25,7 @@ function App() {
 			.catch(error => {
 				console.error("Error fetching data:", error);
 			});
-	});
+	}, []);
 
 	const handleAnsweredChange = e => {
 		setSelectedAnswer(e.target.value);
@@ -80,6 +81,7 @@ function App() {
 		<div className='quiz-container'>
 			<h1>Quiz</h1>
 			<AddQuestion />
+			<DeleteQuestion setQuestions={setQuestions}/>
 			{currentQuestion && (
 				<div className='answers-container'>
 					{visibleQuestions && (
@@ -115,8 +117,12 @@ function App() {
 				setVisibleQuestions={setVisibleQuestions}
 			/> */}
 			<div>
-				<NextorFinishButton onClick={handleNextQuestion} currentQuestionIndex={currentQuestionIndex} questions={questions}/>
-				<ReapetQuizButton onClick={handleRepeatQuiz}/>
+				<NextorFinishButton
+					onClick={handleNextQuestion}
+					currentQuestionIndex={currentQuestionIndex}
+					questions={questions}
+				/>
+				{repeatQuiz && <ReapetQuizButton onClick={handleRepeatQuiz} />}
 			</div>
 			<h3>
 				{quizComplited &&

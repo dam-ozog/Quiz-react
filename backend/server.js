@@ -123,6 +123,29 @@ app.post("/questions", (req, res) => {
     res.status(201).json({ message: "Pytanie zostało zapisane" });
 });
 
+
+app.delete("/questions", (req, res) => {
+    const index = parseInt(req.body.index, 10); // Pobieramy indeks z body
+
+    if (isNaN(index)) {
+        return res.status(400).json({ error: "Invalid index" });
+    }
+
+    const questions = readDataFromFile();
+
+    if (index < 0 || index >= questions.length) {
+        return res.status(404).json({ error: "Question not found" });
+    }
+
+    questions.splice(index, 1);
+    writeDataToFile(questions);
+
+    res.status(200).json({ message: "Question deleted" });
+});
+
+
+  
+
 app.listen(PORT, () => {
     console.log(`Backend server is running on http://localhost:${PORT}`);
 });
