@@ -5,27 +5,23 @@ import AddQuestion from "./components/AddQuestion/AddQuestion";
 import { ReapetQuizButton } from "./components/ReapetQuizButton/ReapetQuizButton";
 import { NextorFinishButton } from "./components/NextorFinishButton/NextorFinishButton";
 import { DeleteQuestion } from "./components/DeleteQuestion/DeleteQuestion";
+import { DownloadQuestions } from "./DownloadAPIHook/DowloadQuestions";
 
 function App() {
+	const { questions, fetchQuestions } = DownloadQuestions();
+
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedAnswer, setSelectedAnswer] = useState(null);
 	const [score, setScore] = useState(0);
 	const [answeredQuestions, setAnsweredQuestions] = useState([]);
 	const [quizComplited, setQuizComplited] = useState(false);
-	const [questions, setQuestions] = useState([]);
+	// const [questions, setQuestions] = useState([]);
 	const [visibleQuestions, setVisibleQuestions] = useState(true);
 	const [repeatQuiz, setRepeatQuiz] = useState(false);
 
 	useEffect(() => {
-		fetch("http://localhost:5000/questions")
-			.then(res => res.json())
-			.then(data => {
-				setQuestions(data);
-			})
-			.catch(error => {
-				console.error("Error fetching data:", error);
-			});
-	}, []);
+		fetchQuestions();
+	}, [fetchQuestions]);
 
 	const handleAnsweredChange = e => {
 		setSelectedAnswer(e.target.value);
@@ -80,8 +76,8 @@ function App() {
 	return (
 		<div className='quiz-container'>
 			<h1>Quiz</h1>
-			<AddQuestion />
-			<DeleteQuestion setQuestions={setQuestions}/>
+			<AddQuestion fetchQuestions={fetchQuestions} />
+			<DeleteQuestion fetchQuestions={fetchQuestions} />
 			{currentQuestion && (
 				<div className='answers-container'>
 					{visibleQuestions && (
@@ -117,11 +113,14 @@ function App() {
 				setVisibleQuestions={setVisibleQuestions}
 			/> */}
 			<div>
-				<NextorFinishButton
+				{
+					!repeatQuiz &&
+					<NextorFinishButton
 					onClick={handleNextQuestion}
 					currentQuestionIndex={currentQuestionIndex}
 					questions={questions}
-				/>
+					/>
+				}
 				{repeatQuiz && <ReapetQuizButton onClick={handleRepeatQuiz} />}
 			</div>
 			<h3>

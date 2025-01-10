@@ -136,10 +136,13 @@ app.delete("/questions", (req, res) => {
     if (index < 0 || index >= questions.length) {
         return res.status(404).json({ error: "Question not found" });
     }
+    const questionDelete = questions.filter(q => q.index === index)
 
     questions.splice(index, 1);
     writeDataToFile(questions);
+    
 
+    console.log(`Pytanie o indeksie ${index} zostało usunięte`, questionDelete)
     res.status(200).json({ message: "Question deleted" });
 });
 

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./AddQuestion.css";
 
-const AddQuestion = () => {
+// eslint-disable-next-line react/prop-types
+const AddQuestion = ({ fetchQuestions }) => {
 	const [visible, setVisible] = useState(false);
 	const [questionText, setQuestionText] = useState("");
 	const [answers, setAnswers] = useState([{ answer: "", value: false }]);
@@ -45,6 +46,7 @@ const AddQuestion = () => {
 					setVisible(false);
 					setQuestionText("");
 					setAnswers([{ answer: "", value: false }]);
+					fetchQuestions();
 				} else {
 					console.error("Błąd podcas zapisywania pytania");
 				}

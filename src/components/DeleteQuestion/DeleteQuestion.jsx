@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-export const DeleteQuestion = ({ setQuestions }) => {
+export const DeleteQuestion = ({ fetchQuestions }) => {
 	const [showButton, setShowButton] = useState(true);
 	const [deleteIndex, setDeleteIndex] = useState(""); // Używamy numeru indeksu
 
@@ -16,7 +16,7 @@ export const DeleteQuestion = ({ setQuestions }) => {
 			return;
 		}
 
-		const response = await fetch(`http://localhost:5000/questions/`, {
+		const response = await fetch(`http://localhost:5000/questions`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -24,22 +24,15 @@ export const DeleteQuestion = ({ setQuestions }) => {
 			body: JSON.stringify({ index: deleteIndex }), // Wysyłamy numer indeksu
 		});
 
-       if (response.ok) {
-        const data = await response.json();
-        console.log("Pytanie zostało usunięte: ", data);
-        alert(`Pytanie o indeksie ${deleteIndex} zostało usunięte`)
-
-
-        const updatedQUestionsResponse = await fetch("http://localhost:5000/questions");
-        if(updatedQUestionsResponse.ok) {
-            const updatedQuestions = await updatedQUestionsResponse.json();
-            setQuestions(updatedQuestions);
-        } else {
-            console.error("Error downloading updated question list ")
-        }
-       } else {
-        console.error("Błąd przy usuwaniu pytania:", response.status)
-       }
+		if (response.ok) {
+			const data = await response.json();
+			fetchQuestions();
+			console.log("Pytanie zostało usunięte: ", data);
+			alert(`Pytanie o indeksie ${deleteIndex} zostało usunięte`);
+		} else {
+			alert(`Nie znaleziono pytania o tym indeksie: ${deleteIndex}`)
+			console.error("Błąd przy usuwaniu pytania:", response.status);
+		}
 
 		// Resetujemy stan po operacji
 		setDeleteIndex("");
