@@ -5,7 +5,7 @@ import "./AddQuestion.css";
 const AddQuestion = ({ fetchQuestions }) => {
 	const [visible, setVisible] = useState(false);
 	const [questionText, setQuestionText] = useState("");
-	const [answers, setAnswers] = useState([{ answer: "", value: false }]);
+	const [answers, setAnswers] = useState([{ answer: "", value: false },{ answer: "", value: false }, { answer: "", value: false }]);
 
 	// Funkcja do aktualizacji tekstu odpowiedzi
 	const handleAnswerTextChange = (index, newText) => {
@@ -19,14 +19,6 @@ const AddQuestion = ({ fetchQuestions }) => {
 		const updatedAnswers = [...answers];
 		updatedAnswers[index].value = isChecked; // Zmieniamy tylko wartość 'value'
 		setAnswers(updatedAnswers);
-	};
-
-	// Dodanie nowej odpowiedzi
-	const addAnswer = () => {
-		if (answers.length < 3) {
-			setAnswers([...answers, { answer: "", value: false }]);
-		}
-		console.log(answers);
 	};
 
 	const SaveQuestion = async () => {
@@ -45,7 +37,7 @@ const AddQuestion = ({ fetchQuestions }) => {
 				if (response.ok) {
 					setVisible(false);
 					setQuestionText("");
-					setAnswers([{ answer: "", value: false }]);
+					setAnswers([{ answer: "", value: false }, { answer: "", value: false }, { answer: "", value: false }]);
 					fetchQuestions();
 				} else {
 					console.error("Błąd podcas zapisywania pytania");
@@ -93,13 +85,9 @@ const AddQuestion = ({ fetchQuestions }) => {
 									Poprawna
 								</label>
 							</div>
+							
 						))}
-						<button
-							type='button'
-							onClick={addAnswer}
-							disabled={answers.length >= 3}>
-							Dodaj pytanie
-						</button>
+						<button onClick={() => setVisible(false)}>Cofnij</button>
 						<button
 							disabled={answers.length < 3 || !questionText}
 							type='button'

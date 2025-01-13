@@ -87,23 +87,6 @@
           "value": false
         }
       ]
-    },
-    {
-      "question": "Ile nóg ma słoń?",
-      "answers": [
-        {
-          "answer": "3",
-          "value": false
-        },
-        {
-          "answer": "6",
-          "value": false
-        },
-        {
-          "answer": "4",
-          "value": true
-        }
-      ]
     }
   ]
 }

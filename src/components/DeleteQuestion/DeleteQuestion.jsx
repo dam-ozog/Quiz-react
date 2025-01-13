@@ -51,6 +51,7 @@ export const DeleteQuestion = ({ fetchQuestions }) => {
 						onChange={e => setDeleteIndex(e.target.value)}
 					/>
 					<button onClick={handleDeleteQuestion}>Usuń</button>
+					<button onClick={handleShowButton}>Cofnij</button>
 				</div>
 			)}
 		</>
