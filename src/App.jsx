@@ -6,6 +6,7 @@ import { ReapetQuizButton } from "./components/ReapetQuizButton/ReapetQuizButton
 import { NextorFinishButton } from "./components/NextorFinishButton/NextorFinishButton";
 import { DeleteQuestion } from "./components/DeleteQuestion/DeleteQuestion";
 import { DownloadQuestions } from "./DownloadAPIHook/DowloadQuestions";
+import { ReturnButton } from "./components/ReturnButton/ReturnButton";
 
 function App() {
 	const { questions, fetchQuestions } = DownloadQuestions();
@@ -16,8 +17,8 @@ function App() {
 	const [answeredQuestions, setAnsweredQuestions] = useState([]);
 	const [quizComplited, setQuizComplited] = useState(false);
 	// const [questions, setQuestions] = useState([]);
-	const [visibleQuestions, setVisibleQuestions] = useState(true);
-	const [repeatQuiz, setRepeatQuiz] = useState(false);
+	// const [visibleQuestions, setVisibleQuestions] = useState(true);
+	// const [repeatQuiz, setRepeatQuiz] = useState(false);
 
 	useEffect(() => {
 		fetchQuestions();
@@ -43,6 +44,7 @@ function App() {
 	const handleNextQuestion = () => {
 		const currentQuestion = questions[currentQuestionIndex];
 		handleCheckAnswer();
+		console.log(currentQuestionIndex);
 
 		setAnsweredQuestions([
 			...answeredQuestions,
@@ -59,18 +61,23 @@ function App() {
 		} else {
 			setQuizComplited(true);
 			setSelectedAnswer(null);
-			setVisibleQuestions(false);
-			setRepeatQuiz(true);
+			setCurrentQuestionIndex(0);
+			// setVisibleQuestions(false);
+			// setRepeatQuiz(true);
 		}
 	};
 
 	const handleRepeatQuiz = () => {
-		setRepeatQuiz(false);
+		// setRepeatQuiz(false);
 		setCurrentQuestionIndex(0);
 		setQuizComplited(false);
 		setScore(0);
-		setVisibleQuestions(true);
+		// setVisibleQuestions(true);
 	};
+
+	const handleReturnToBackAnswer = () => {
+		setCurrentQuestionIndex(currentQuestionIndex - 1)
+	}
 
 	const currentQuestion = questions[currentQuestionIndex];
 	return (
@@ -80,7 +87,7 @@ function App() {
 			<DeleteQuestion fetchQuestions={fetchQuestions} />
 			{currentQuestion && (
 				<div className='answers-container'>
-					{visibleQuestions && (
+					{!quizComplited && (
 						<>
 							<h3>{currentQuestion.question}</h3>
 							{currentQuestion.answers.map(answer => (
@@ -99,29 +106,20 @@ function App() {
 					)}
 				</div>
 			)}
-			{/* <Button
-				currentQuestionIndex={currentQuestionIndex}
-				questions={questions}
-				selectedAnswer={selectedAnswer}
-				checkAnswer={handleCheckAnswer}
-				setSelectedAnswer={setSelectedAnswer}
-				setCurrentQuestionIndex={setCurrentQuestionIndex}
-				setQuizComplited={setQuizComplited}
-				setAnsweredQuestions={setAnsweredQuestions}
-				answeredQuestions={answeredQuestions}
-				setScore={setScore}
-				setVisibleQuestions={setVisibleQuestions}
-			/> */}
-			<div>
-				{
-					!repeatQuiz &&
-					<NextorFinishButton
-					onClick={handleNextQuestion}
-					currentQuestionIndex={currentQuestionIndex}
-					questions={questions}
-					/>
+
+			<div className='two-button'>
+				{currentQuestionIndex >= 1 ? (
+
+					<ReturnButton onClick={handleReturnToBackAnswer} text="Cofnij"/>) : null
 				}
-				{repeatQuiz && <ReapetQuizButton onClick={handleRepeatQuiz} />}
+				{!quizComplited && (
+					<NextorFinishButton
+						onClick={handleNextQuestion}
+						currentQuestionIndex={currentQuestionIndex}
+						questions={questions}
+					/>
+				)}
+				{quizComplited && <ReapetQuizButton onClick={handleRepeatQuiz} />}
 			</div>
 			<h3>
 				{quizComplited &&

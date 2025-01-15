@@ -46,3 +46,9 @@
 .read-the-docs {
   color: #888;
 }
+
+.two-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

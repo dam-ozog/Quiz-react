@@ -1,11 +1,17 @@
 import { useState } from "react";
 import "./AddQuestion.css";
+import { InputAnswers } from "../InputAnswers/InputAnswers";
+import { ReturnButton } from "../ReturnButton/ReturnButton";
 
 // eslint-disable-next-line react/prop-types
 const AddQuestion = ({ fetchQuestions }) => {
 	const [visible, setVisible] = useState(false);
 	const [questionText, setQuestionText] = useState("");
-	const [answers, setAnswers] = useState([{ answer: "", value: false },{ answer: "", value: false }, { answer: "", value: false }]);
+	const [answers, setAnswers] = useState([
+		{ answer: "", value: false },
+		{ answer: "", value: false },
+		{ answer: "", value: false },
+	]);
 
 	// Funkcja do aktualizacji tekstu odpowiedzi
 	const handleAnswerTextChange = (index, newText) => {
@@ -37,7 +43,11 @@ const AddQuestion = ({ fetchQuestions }) => {
 				if (response.ok) {
 					setVisible(false);
 					setQuestionText("");
-					setAnswers([{ answer: "", value: false }, { answer: "", value: false }, { answer: "", value: false }]);
+					setAnswers([
+						{ answer: "", value: false },
+						{ answer: "", value: false },
+						{ answer: "", value: false },
+					]);
 					fetchQuestions();
 				} else {
 					console.error("Błąd podcas zapisywania pytania");
@@ -65,29 +75,13 @@ const AddQuestion = ({ fetchQuestions }) => {
 							/>
 						</div>
 						<h4>Odpowiedzi</h4>
-						{answers.map((answer, index) => (
-							<div key={index}>
-								<input
-									type='text'
-									placeholder='Treść odpowiedzi'
-									value={answer.answer} // Poprawne wiązanie pola tekstowego
-									onChange={e => handleAnswerTextChange(index, e.target.value)}
-									required
-								/>
-								<label>
-									<input
-										type='checkbox'
-										checked={answer.value} // Poprawne wiązanie checkboxa
-										onChange={e =>
-											handleCheckboxChange(index, e.target.checked)
-										}
-									/>
-									Poprawna
-								</label>
-							</div>
-							
-						))}
-						<button onClick={() => setVisible(false)}>Cofnij</button>
+						<InputAnswers
+							answers={answers}
+							handleCheckboxChange={handleCheckboxChange}
+							handleAnswerTextChange={handleAnswerTextChange}
+						/>
+
+						<ReturnButton onClick={() => setVisible(prevState => !prevState)} text={"Cofnij"}/>
 						<button
 							disabled={answers.length < 3 || !questionText}
 							type='button'

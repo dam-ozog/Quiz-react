@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { ReturnButton } from "../ReturnButton/ReturnButton";
 
 export const DeleteQuestion = ({ fetchQuestions }) => {
 	const [showButton, setShowButton] = useState(true);
@@ -51,7 +52,7 @@ export const DeleteQuestion = ({ fetchQuestions }) => {
 						onChange={e => setDeleteIndex(e.target.value)}
 					/>
 					<button onClick={handleDeleteQuestion}>Usuń</button>
-					<button onClick={handleShowButton}>Cofnij</button>
+					<ReturnButton onClick={handleShowButton} text="Cofnij"/>
 				</div>
 			)}
 		</>
