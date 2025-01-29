@@ -55,6 +55,8 @@ function App() {
 			},
 		]);
 
+		console.log("Questions:", currentQuestion.selectedAnswer);
+		console.log("Current Question Index:", currentQuestionIndex);
 		if (currentQuestionIndex < questions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			setSelectedAnswer(null);
@@ -76,8 +78,8 @@ function App() {
 	};
 
 	const handleReturnToBackAnswer = () => {
-		setCurrentQuestionIndex(currentQuestionIndex - 1)
-	}
+		setCurrentQuestionIndex(currentQuestionIndex - 1);
+	};
 
 	const currentQuestion = questions[currentQuestionIndex];
 	return (
@@ -109,9 +111,8 @@ function App() {
 
 			<div className='two-button'>
 				{currentQuestionIndex >= 1 ? (
-
-					<ReturnButton onClick={handleReturnToBackAnswer} text="Cofnij"/>) : null
-				}
+					<ReturnButton onClick={handleReturnToBackAnswer} text='Cofnij' />
+				) : null}
 				{!quizComplited && (
 					<NextorFinishButton
 						onClick={handleNextQuestion}

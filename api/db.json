@@ -37,24 +37,6 @@
       "id": "be86"
     },
     {
-      "question": "20 + 20",
-      "answers": [
-        {
-          "answer": "40",
-          "value": true
-        },
-        {
-          "answer": "60",
-          "value": false
-        },
-        {
-          "answer": "35",
-          "value": false
-        }
-      ],
-      "id": "78ee"
-    },
-    {
       "question": "Ile dni ma rok?",
       "answers": [
         {
