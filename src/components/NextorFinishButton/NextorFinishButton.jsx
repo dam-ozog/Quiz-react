@@ -6,7 +6,7 @@ export const NextorFinishButton = ({
 	questions,
 }) => {
 	return (
-		<button onClick={onClick}>
+		<button className="btn btn-accent " onClick={onClick}>
 			{currentQuestionIndex === questions.length - 1
 				? "Zakończ quiz"
 				: "Następne pytanie"}

@@ -4,20 +4,22 @@ export const InputAnswers = ({
 	handleAnswerTextChange,
 }) => {
 	return answers.map((answer, index) => (
-		<div key={index}>
+		<div className="m-[15px]" key={index}>
 			<input
 				type='text'
 				placeholder='Treść odpowiedzi'
 				value={answer.answer} // Poprawne wiązanie pola tekstowego
 				onChange={e => handleAnswerTextChange(index, e.target.value)}
 				required
+				className="input input-bordered input-info w-full max-w-xs"
 			/>
 			<label>
 				<input
 					type='radio'
 					name="good"
 					checked={answer.value} // Poprawne wiązanie checkboxa
-					onChange={e => handleCheckboxChange(index, e.target.checked)}
+					onChange={() => handleCheckboxChange(index)}
+					className="m-[5px]"
 				/>
 				Poprawna
 			</label>

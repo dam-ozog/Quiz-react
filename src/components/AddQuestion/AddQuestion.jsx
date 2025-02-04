@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState } from "react";
 import "./AddQuestion.css";
 import { InputAnswers } from "../InputAnswers/InputAnswers";
@@ -13,6 +14,11 @@ const AddQuestion = ({ fetchQuestions }) => {
 		{ answer: "", value: false },
 	]);
 
+	const API_BASE_URL =
+		process.env.NODE_ENV === "development"
+			? "http://localhost:5000/api"
+			: "/api";
+
 	// Funkcja do aktualizacji tekstu odpowiedzi
 	const handleAnswerTextChange = (index, newText) => {
 		const updatedAnswers = [...answers];
@@ -21,16 +27,18 @@ const AddQuestion = ({ fetchQuestions }) => {
 	};
 
 	// Funkcja do obsługi zmiany checkboxa
-	const handleCheckboxChange = (index, isChecked) => {
-		const updatedAnswers = [...answers];
-		updatedAnswers[index].value = isChecked; // Zmieniamy tylko wartość 'value'
+	const handleCheckboxChange = index => {
+		const updatedAnswers = answers.map((answer, i) => ({
+			...answer,
+			value: i === index,
+		}));
 		setAnswers(updatedAnswers);
 	};
 
 	const SaveQuestion = async () => {
 		if (questionText && answers.length >= 3) {
 			try {
-				const response = await fetch("/api/questions", {
+				const response = await fetch(`${API_BASE_URL}/questions`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -59,29 +67,34 @@ const AddQuestion = ({ fetchQuestions }) => {
 	};
 
 	return (
-		<div>
+		<div className="max-w-[350px] m-auto mb-[20px]">
 			{!visible && (
-				<button onClick={() => setVisible(true)}>Dodaj nowe pytanie</button>
+				<button className="btn btn-outline btn-success" onClick={() => setVisible(true)}>Dodaj nowe pytanie</button>
 			)}
 			{visible && (
 				<form>
 					<div>
-						<div>
+						<div className="m-[10px]">
 							<label htmlFor='question'>Treść pytania:</label>
 							<input
 								type='text'
 								value={questionText}
 								onChange={e => setQuestionText(e.target.value)}
+								placeholder="Wpisz treść pytania"
+								className="input input-bordered input-primary w-full max-w-xs"
 							/>
 						</div>
-						<h4>Odpowiedzi</h4>
+						<h4 className="p-[10px] underline underline-offset-2">Odpowiedzi</h4>
 						<InputAnswers
 							answers={answers}
 							handleCheckboxChange={handleCheckboxChange}
 							handleAnswerTextChange={handleAnswerTextChange}
 						/>
 
-						<ReturnButton onClick={() => setVisible(prevState => !prevState)} text={"Cofnij"}/>
+						<ReturnButton
+							onClick={() => setVisible(prevState => !prevState)}
+							text={"Cofnij"}
+						/>
 						<button
 							disabled={answers.length < 3 || !questionText}
 							type='button'

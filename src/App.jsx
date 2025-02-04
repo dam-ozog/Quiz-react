@@ -7,6 +7,7 @@ import { NextorFinishButton } from "./components/NextorFinishButton/NextorFinish
 import { DeleteQuestion } from "./components/DeleteQuestion/DeleteQuestion";
 import { DownloadQuestions } from "./DownloadAPIHook/DowloadQuestions";
 import { ReturnButton } from "./components/ReturnButton/ReturnButton";
+import { CurrentReviewQuestion } from "./components/CurrentReviewQuestion/CurrentReviewQuestions";
 
 function App() {
 	const { questions, fetchQuestions } = DownloadQuestions();
@@ -55,8 +56,6 @@ function App() {
 			},
 		]);
 
-		console.log("Questions:", currentQuestion.selectedAnswer);
-		console.log("Current Question Index:", currentQuestionIndex);
 		if (currentQuestionIndex < questions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			setSelectedAnswer(null);
@@ -83,35 +82,24 @@ function App() {
 
 	const currentQuestion = questions[currentQuestionIndex];
 	return (
-		<div className='quiz-container'>
-			<h1>Quiz</h1>
-			<AddQuestion fetchQuestions={fetchQuestions} />
-			<DeleteQuestion fetchQuestions={fetchQuestions} />
+		<div className="max-w-1280 text-center m-auto p-[2rem] italic text-[20px]">
+			<h1 className="p-[1rem] text-[34px]">Quiz</h1>
+			
+
 			{currentQuestion && (
-				<div className='answers-container'>
+				<div>
 					{!quizComplited && (
-						<>
-							<h3>{currentQuestion.question}</h3>
-							{currentQuestion.answers.map(answer => (
-								<div key={answer.answer} className='answers'>
-									<input
-										type='radio'
-										id={answer.answer}
-										name='answer'
-										value={answer.answer}
-										onChange={handleAnsweredChange}
-									/>
-									<label htmlFor={answer.answer}>{answer.answer}</label>
-								</div>
-							))}
-						</>
+						<CurrentReviewQuestion
+							currentQuestion={currentQuestion}
+							handleAnsweredChange={handleAnsweredChange}
+						/>
 					)}
 				</div>
 			)}
 
-			<div className='two-button'>
+			<div className="flex flex-row justify-center gap-[10px]">
 				{currentQuestionIndex >= 1 ? (
-					<ReturnButton onClick={handleReturnToBackAnswer} text='Cofnij' />
+					<ReturnButton class="btn" onClick={handleReturnToBackAnswer} text='Cofnij' />
 				) : null}
 				{!quizComplited && (
 					<NextorFinishButton
@@ -120,8 +108,15 @@ function App() {
 						questions={questions}
 					/>
 				)}
+				
 				{quizComplited && <ReapetQuizButton onClick={handleRepeatQuiz} />}
 			</div>
+			{currentQuestionIndex === 0 && (
+				<div className="mt-[20px]">
+					<AddQuestion fetchQuestions={fetchQuestions} />
+					<DeleteQuestion fetchQuestions={fetchQuestions} />
+				</div>
+			)}
 			<h3>
 				{quizComplited &&
 					`Quiz zakończony ! Twój wynik to: ${score} na ${questions.length}`}

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export const ReapetQuizButton = ({onClick}) => {
     return ( 
-        <button onClick={onClick}>Powtórz Quiz</button>
+        <button className='btn glass mb-[15px]' onClick={onClick}>Powtórz Quiz</button>
      );
 };
 
