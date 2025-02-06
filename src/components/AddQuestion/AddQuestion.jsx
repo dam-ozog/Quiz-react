@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import { useState } from "react";
-import "./AddQuestion.css";
 import { InputAnswers } from "../InputAnswers/InputAnswers";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
 
@@ -66,6 +65,13 @@ const AddQuestion = ({ fetchQuestions }) => {
 		}
 	};
 
+	const handleDisabledButton = () => {
+		if (questionText.trim() === "" ||
+		answers.filter(answer => answer.value).length !== 1 ||
+		answers.some(answer => answer.answer.trim() === ""))
+		return true;
+	}
+
 	return (
 		<div className="max-w-[350px] m-auto mb-[20px]">
 			{!visible && (
@@ -73,7 +79,7 @@ const AddQuestion = ({ fetchQuestions }) => {
 			)}
 			{visible && (
 				<form>
-					<div>
+					<div className="">
 						<div className="m-[10px]">
 							<label htmlFor='question'>Treść pytania:</label>
 							<input
@@ -84,7 +90,7 @@ const AddQuestion = ({ fetchQuestions }) => {
 								className="input input-bordered input-primary w-full max-w-xs"
 							/>
 						</div>
-						<h4 className="p-[10px] underline underline-offset-2">Odpowiedzi</h4>
+						<h4 className="p-[10px] underline underline-offset-2">Odpowiedzi:</h4>
 						<InputAnswers
 							answers={answers}
 							handleCheckboxChange={handleCheckboxChange}
@@ -96,7 +102,8 @@ const AddQuestion = ({ fetchQuestions }) => {
 							text={"Cofnij"}
 						/>
 						<button
-							disabled={answers.length < 3 || !questionText}
+							className="btn btn-outline ml-[10px]"
+							disabled={handleDisabledButton()}
 							type='button'
 							onClick={SaveQuestion}>
 							Zapisz pytanie

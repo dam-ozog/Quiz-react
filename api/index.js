@@ -178,8 +178,7 @@ app.post("/api/questions", (req, res) => {
 });
 
 app.delete("/api/questions", (req, res) => {
-	const index = parseInt(req.body.index, 10); // Pobieramy indeks z body
-	console.log("otrzymane body: ", req.body);
+	const index = parseInt(req.body.index, 10) - 1; // Pobieramy indeks z body
 
 	if (isNaN(index)) {
 		return res.status(400).json({ error: "Invalid index" });
@@ -195,7 +194,7 @@ app.delete("/api/questions", (req, res) => {
 	questions.splice(index, 1);
 	// writeDataToFile(questions);
 
-	console.log(`Pytanie o indeksie ${index} zostało usunięte`, questionDelete);
+	console.log(`Pytanie o numerze ${index} zostało usunięte`, questionDelete);
 	res.status(200).json({ message: "Question deleted" });
 });
 

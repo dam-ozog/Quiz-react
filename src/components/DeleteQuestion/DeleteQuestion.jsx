@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
 
-export const DeleteQuestion = ({ fetchQuestions }) => {
+export const DeleteQuestion = ({ fetchQuestions, questions }) => {
 	const [showButton, setShowButton] = useState(true);
 	const [deleteIndex, setDeleteIndex] = useState(""); // Używamy numeru indeksu
 
@@ -44,18 +44,20 @@ export const DeleteQuestion = ({ fetchQuestions }) => {
 	};
 
 	return (
-		<div className="max-w-[300px] m-auto">
+		<div className="max-w-[200px] m-auto">
 			{showButton && <button className="btn btn-outline btn-error" onClick={handleShowButton}>Usuń Pytanie</button>}
 			{!showButton && (
-				<div className="flex flex-col gap-10">
+				<div className="flex flex-col gap-[10px]">
 					<label htmlFor=''>Wpisz numer indeksu pytania</label>
 					<input
 						value={deleteIndex}
-						type='text'
+						type='number'
+						min={1}
+						max={questions.length}
 						onChange={e => setDeleteIndex(e.target.value)}
-						className="text-center"
+						className="text-center input input-bordered w-full max-w-xs"
 					/>
-					<button onClick={handleDeleteQuestion}>Usuń</button>
+					<button className="btn btn-outline btn-warning" onClick={handleDeleteQuestion}>Usuń</button>
 					<ReturnButton onClick={handleShowButton} text="Cofnij"/>
 				</div>
 			)}

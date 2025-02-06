@@ -17,9 +17,6 @@ function App() {
 	const [score, setScore] = useState(0);
 	const [answeredQuestions, setAnsweredQuestions] = useState([]);
 	const [quizComplited, setQuizComplited] = useState(false);
-	// const [questions, setQuestions] = useState([]);
-	// const [visibleQuestions, setVisibleQuestions] = useState(true);
-	// const [repeatQuiz, setRepeatQuiz] = useState(false);
 
 	useEffect(() => {
 		fetchQuestions();
@@ -34,8 +31,6 @@ function App() {
 		const correctAnswer = currentQuestion.answers.find(
 			ans => ans.value === true
 		);
-		// console.log("Selected answer", selectedAnswer)
-		// console.log("Correct answer", correctAnswer?.answer)
 
 		if (selectedAnswer === correctAnswer.answer) {
 			setScore(prevScore => prevScore + 1);
@@ -45,7 +40,6 @@ function App() {
 	const handleNextQuestion = () => {
 		const currentQuestion = questions[currentQuestionIndex];
 		handleCheckAnswer();
-		console.log(currentQuestionIndex);
 
 		setAnsweredQuestions([
 			...answeredQuestions,
@@ -82,9 +76,8 @@ function App() {
 
 	const currentQuestion = questions[currentQuestionIndex];
 	return (
-		<div className="max-w-1280 text-center m-auto p-[2rem] italic text-[20px]">
-			<h1 className="p-[1rem] text-[34px]">Quiz</h1>
-			
+		<div className='max-w-1280 text-center m-auto p-[2rem] italic text-[20px]'>
+			<h1 className='p-[1rem] text-[34px]'>Quiz</h1>
 
 			{currentQuestion && (
 				<div>
@@ -97,9 +90,13 @@ function App() {
 				</div>
 			)}
 
-			<div className="flex flex-row justify-center gap-[10px]">
+			<div className='flex flex-row justify-center gap-[10px]'>
 				{currentQuestionIndex >= 1 ? (
-					<ReturnButton class="btn" onClick={handleReturnToBackAnswer} text='Cofnij' />
+					<ReturnButton
+						class='btn'
+						onClick={handleReturnToBackAnswer}
+						text='Cofnij'
+					/>
 				) : null}
 				{!quizComplited && (
 					<NextorFinishButton
@@ -108,13 +105,13 @@ function App() {
 						questions={questions}
 					/>
 				)}
-				
+
 				{quizComplited && <ReapetQuizButton onClick={handleRepeatQuiz} />}
 			</div>
 			{currentQuestionIndex === 0 && (
-				<div className="mt-[20px]">
+				<div className='mt-[20px]'>
 					<AddQuestion fetchQuestions={fetchQuestions} />
-					<DeleteQuestion fetchQuestions={fetchQuestions} />
+					<DeleteQuestion fetchQuestions={fetchQuestions} questions={questions}/>
 				</div>
 			)}
 			<h3>
