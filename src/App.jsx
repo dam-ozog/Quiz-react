@@ -57,17 +57,13 @@ function App() {
 			setQuizComplited(true);
 			setSelectedAnswer(null);
 			setCurrentQuestionIndex(0);
-			// setVisibleQuestions(false);
-			// setRepeatQuiz(true);
 		}
 	};
 
 	const handleRepeatQuiz = () => {
-		// setRepeatQuiz(false);
 		setCurrentQuestionIndex(0);
 		setQuizComplited(false);
 		setScore(0);
-		// setVisibleQuestions(true);
 	};
 
 	const handleReturnToBackAnswer = () => {
@@ -114,7 +110,7 @@ function App() {
 					<DeleteQuestion fetchQuestions={fetchQuestions} questions={questions}/>
 				</div>
 			)}
-			<h3>
+			<h3 className="mt-[20px]">
 				{quizComplited &&
 					`Quiz zakończony ! Twój wynik to: ${score} na ${questions.length}`}
 			</h3>

@@ -12,7 +12,7 @@ export const CurrentReviewQuestion = ({currentQuestion, handleAnsweredChange}) =
 						name='answer'
 						value={answer.answer}
 						onChange={handleAnsweredChange}
-						className="ml-[5px]"
+						className="ml-[5px] radio radio-success"
 					/></label>
 				</div>
 			))}
