@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
-export const CurrentReviewQuestion = ({currentQuestion, handleAnsweredChange}) => {
+import React from 'react';
+import { CurrentReviewQuestionProps } from '../../Types/Type';
+
+export const CurrentReviewQuestion: React.FC<CurrentReviewQuestionProps> = ({currentQuestion, handleAnsweredChange}) => {
 	return (
 		<>
 			<h3 className="text-[22px] underline underline-offset-[8px]">{currentQuestion.question}</h3>

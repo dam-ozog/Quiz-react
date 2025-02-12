@@ -1,4 +1,6 @@
-export const InputAnswers = ({
+import { InputAnswersProps } from "../../Types/Type";
+
+export const InputAnswers: React.FC<InputAnswersProps> = ({
 	answers,
 	handleCheckboxChange,
 	handleAnswerTextChange,

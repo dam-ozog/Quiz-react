@@ -1,11 +1,10 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
+import { DeleteQuestionProps } from '../../Types/Type';
 
-export const DeleteQuestion = ({ fetchQuestions, questions }) => {
+export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ fetchQuestions, questions }) => {
 	const [showButton, setShowButton] = useState(true);
-	const [deleteIndex, setDeleteIndex] = useState(""); // Używamy numeru indeksu
+	const [deleteIndex, setDeleteIndex] = useState<number>(1);
 
 	const API_BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api"
 
@@ -20,6 +19,8 @@ export const DeleteQuestion = ({ fetchQuestions, questions }) => {
 			return;
 		}
 
+		const questionToDelete = questions[deleteIndex - 1];
+
 		const response = await fetch(`${API_BASE_URL}/questions`, {
 			method: "DELETE",
 			headers: {
@@ -31,15 +32,15 @@ export const DeleteQuestion = ({ fetchQuestions, questions }) => {
 		if (response.ok) {
 			const data = await response.json();
 			fetchQuestions();
-			console.log("Pytanie zostało usunięte: ", data);
-			alert(`Pytanie o indeksie ${deleteIndex} zostało usunięte`);
+			console.log("Pytanie zostało usunięte: ", questionToDelete.question);
+			alert(`Pytanie o numerze ${deleteIndex} zostało usunięte`);
 		} else {
 			alert(`Nie znaleziono pytania o tym indeksie: ${deleteIndex}`)
 			console.error("Błąd przy usuwaniu pytania:", response.status);
 		}
 
 		// Resetujemy stan po operacji
-		setDeleteIndex("");
+		setDeleteIndex(1);
 		handleShowButton();
 	};
 
@@ -54,7 +55,7 @@ export const DeleteQuestion = ({ fetchQuestions, questions }) => {
 						type='number'
 						min={1}
 						max={questions.length}
-						onChange={e => setDeleteIndex(e.target.value)}
+						onChange={e => setDeleteIndex(Number(e.target.value))}
 						className="text-center input input-bordered w-full max-w-xs"
 					/>
 					<button className="btn btn-outline btn-warning" onClick={handleDeleteQuestion}>Usuń</button>

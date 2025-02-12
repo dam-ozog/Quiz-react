@@ -1,12 +1,11 @@
-/* eslint-disable no-undef */
 import { useState } from "react";
 import { InputAnswers } from "../InputAnswers/InputAnswers";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
+import { AddQuestionProps } from '../../Types/Type';
 
-// eslint-disable-next-line react/prop-types
-const AddQuestion = ({ fetchQuestions }) => {
-	const [visible, setVisible] = useState(false);
-	const [questionText, setQuestionText] = useState("");
+const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizCompleted, setCurrentQuestionIndex, setScore }) => {
+	const [visible, setVisible] = useState<boolean>(false);
+	const [questionText, setQuestionText] = useState<string>("");
 	const [answers, setAnswers] = useState([
 		{ answer: "", value: false },
 		{ answer: "", value: false },
@@ -19,14 +18,14 @@ const AddQuestion = ({ fetchQuestions }) => {
 			: "/api";
 
 	// Funkcja do aktualizacji tekstu odpowiedzi
-	const handleAnswerTextChange = (index, newText) => {
+	const handleAnswerTextChange = (index: number, newText: string) => {
 		const updatedAnswers = [...answers];
 		updatedAnswers[index].answer = newText; // Zmieniamy tylko tekst odpowiedzi
 		setAnswers(updatedAnswers);
 	};
 
 	// Funkcja do obsługi zmiany checkboxa
-	const handleCheckboxChange = index => {
+	const handleCheckboxChange = (index: number) => {
 		const updatedAnswers = answers.map((answer, i) => ({
 			...answer,
 			value: i === index,
@@ -56,6 +55,10 @@ const AddQuestion = ({ fetchQuestions }) => {
 						{ answer: "", value: false },
 					]);
 					fetchQuestions();
+					setQuizCompleted(false);
+					setScore(0);
+					setCurrentQuestionIndex(0);
+					alert("Pytanie zostało dodane")
 				} else {
 					console.error("Błąd podcas zapisywania pytania");
 				}
@@ -65,11 +68,12 @@ const AddQuestion = ({ fetchQuestions }) => {
 		}
 	};
 
-	const handleDisabledButton = () => {
-		if (questionText.trim() === "" ||
-		answers.filter(answer => answer.value).length !== 1 ||
-		answers.some(answer => answer.answer.trim() === ""))
-		return true;
+	const handleDisabledButton = (): boolean => {
+		return (
+			questionText.trim() === "" ||
+			answers.filter(answer => answer.value).length !== 1 ||
+			answers.some(answer => answer.answer.trim() === "")
+		);
 	}
 
 	return (
@@ -98,7 +102,7 @@ const AddQuestion = ({ fetchQuestions }) => {
 						/>
 
 						<ReturnButton
-							onClick={() => setVisible(prevState => !prevState)}
+							onClick={() => setVisible(false)}
 							text={"Cofnij"}
 						/>
 						<button
