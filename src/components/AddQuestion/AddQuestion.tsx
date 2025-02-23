@@ -2,6 +2,7 @@ import { useState } from "react";
 import { InputAnswers } from "../InputAnswers/InputAnswers";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
 import { AddQuestionProps } from '../../Types/Type';
+import { useParams } from "react-router-dom";
 
 const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizCompleted, setCurrentQuestionIndex, setScore }) => {
 	const [visible, setVisible] = useState<boolean>(false);
@@ -11,6 +12,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 		{ answer: "", value: false },
 		{ answer: "", value: false },
 	]);
+	const { id } = useParams();
 
 	const API_BASE_URL =
 		process.env.NODE_ENV === "development"
@@ -33,6 +35,8 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 		setAnswers(updatedAnswers);
 	};
 
+	const quizId = id;
+
 	const SaveQuestion = async () => {
 		if (questionText && answers.length >= 3) {
 			try {
@@ -44,6 +48,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 					body: JSON.stringify({
 						question: questionText,
 						answers,
+						quizId,
 					}),
 				});
 				if (response.ok) {

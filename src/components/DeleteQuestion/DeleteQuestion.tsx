@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { ReturnButton } from "../ReturnButton/ReturnButton";
 import { DeleteQuestionProps } from '../../Types/Type';
+import { useParams } from "react-router-dom";
 
 export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ fetchQuestions, questions }) => {
 	const [showButton, setShowButton] = useState(true);
 	const [deleteIndex, setDeleteIndex] = useState<number>(1);
+	const { id } = useParams();
 
 	const API_BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api"
 
@@ -20,17 +22,18 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ fetchQuestions, 
 		}
 
 		const questionToDelete = questions[deleteIndex - 1];
+		const quizId = id;
 
 		const response = await fetch(`${API_BASE_URL}/questions`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ index: deleteIndex }), // Wysyłamy numer indeksu
+			body: JSON.stringify({ deleteIndex, quizId }), // Wysyłamy numer indeksu
 		});
-		
+		console.log(deleteIndex, quizId)
 		if (response.ok) {
-			const data = await response.json();
+			// const data = await response.json();
 			fetchQuestions();
 			console.log("Pytanie zostało usunięte: ", questionToDelete.question);
 			alert(`Pytanie o numerze ${deleteIndex} zostało usunięte`);

@@ -6,42 +6,69 @@ import { DeleteQuestion } from "../components/DeleteQuestion/DeleteQuestion";
 import { DownloadQuestions } from "../DownloadAPIHook/DowloadQuestions";
 import { ReturnButton } from "../components/ReturnButton/ReturnButton";
 import { CurrentReviewQuestion } from "../components/CurrentReviewQuestion/CurrentReviewQuestions";
-import { AnsweredQuestion } from "../Types/Type";
+import { AnsweredQuestion, QuizQuestion } from "../Types/Type";
+import {  useParams } from "react-router-dom";
 
 export const QuizApp = () => {
-    const { questions, fetchQuestions } = DownloadQuestions();
+	const { questions, fetchQuestions } = DownloadQuestions();
+	const { id } = useParams();
 
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-	const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+	const [selectedAnswer, setSelectedAnswer] = useState<string | null>("");
 	const [score, setScore] = useState<number>(0);
 	const [answeredQuestions, setAnsweredQuestions] = useState<
 		AnsweredQuestion[]
 	>([]);
 	const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
+	const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+	const [quizName, setQuizName] = useState<string>("");
 
 	useEffect(() => {
 		fetchQuestions();
 	}, [fetchQuestions]);
 
+	useEffect(() => {
+		if (id && questions.length > 0) {
+			const foundQuiz = questions.find(quiz => quiz.id === id);
+			if (foundQuiz) {
+				setQuizQuestions(foundQuiz.questions);
+				setCurrentQuestionIndex(0);
+				setQuizCompleted(false);
+				setScore(0);
+				setQuizName(foundQuiz.title);
+			}
+		}
+	}, [id, questions]);
+
+	const currentQuestion: QuizQuestion | null =
+		quizQuestions[currentQuestionIndex] || null; //odczytujemy listę pytań
+
 	const handleAnsweredChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSelectedAnswer(e.target.value);
 	};
 
-
 	const handleCheckAnswer = () => {
-		const currentQuestion = questions[currentQuestionIndex];
+		if (!currentQuestion || !selectedAnswer) return false;
+
+		// const currentQuestion = questions[currentQuestionIndex];
 		const correctAnswer = currentQuestion.answers.find(
 			ans => ans.value === true
 		);
 
 		if (selectedAnswer === correctAnswer?.answer) {
-			setScore(prevScore => prevScore + 1);
+			return true;
+		} else {
+			return false;
 		}
 	};
 
 	const handleNextQuestion = () => {
-		const currentQuestion = questions[currentQuestionIndex];
-		handleCheckAnswer();
+		// const currentQuestion = questions[currentQuestionIndex];
+		const isCorrect = handleCheckAnswer();
+
+		if (isCorrect) {
+			setScore(prev => prev + 1);
+		}
 
 		setAnsweredQuestions([
 			...answeredQuestions,
@@ -52,7 +79,7 @@ export const QuizApp = () => {
 			},
 		]);
 
-		if (currentQuestionIndex < questions.length - 1) {
+		if (currentQuestionIndex < quizQuestions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			setSelectedAnswer(null);
 		} else {
@@ -72,11 +99,9 @@ export const QuizApp = () => {
 		setCurrentQuestionIndex(currentQuestionIndex - 1);
 	};
 
-	const currentQuestion = questions[currentQuestionIndex];
-
 	return (
 		<div className='max-w-1280 text-center m-auto p-[2rem] italic text-[20px]'>
-			<h1 className='p-[1rem] text-[34px]'></h1>
+			<h1 className='p-[1rem] text-[34px]'>{quizName}</h1>
 
 			{currentQuestion && (
 				<div>
@@ -97,7 +122,7 @@ export const QuizApp = () => {
 					<NextorFinishButton
 						onClick={handleNextQuestion}
 						currentQuestionIndex={currentQuestionIndex}
-						questions={questions}
+						questions={quizQuestions}
 					/>
 				)}
 
@@ -105,19 +130,24 @@ export const QuizApp = () => {
 			</div>
 			{currentQuestionIndex === 0 && (
 				<div className='mt-[20px]'>
-					<AddQuestion fetchQuestions={fetchQuestions} setQuizCompleted={setQuizCompleted} setCurrentQuestionIndex={setCurrentQuestionIndex} setScore={setScore}/>
+					<AddQuestion
+						fetchQuestions={fetchQuestions}
+						setQuizCompleted={setQuizCompleted}
+						setCurrentQuestionIndex={setCurrentQuestionIndex}
+						setScore={setScore}
+					/>
 					{!quizCompleted ? (
 						<DeleteQuestion
 							fetchQuestions={fetchQuestions}
-							questions={questions}
+							questions={quizQuestions}
 						/>
 					) : null}
 				</div>
 			)}
 			<h3 className='mt-[20px]'>
 				{quizCompleted &&
-					`Quiz zakończony ! Twój wynik to: ${score} na ${questions.length}`}
+					`Quiz zakończony ! Twój wynik to: ${score} na ${quizQuestions.length}`}
 			</h3>
 		</div>
 	);
-}
+};

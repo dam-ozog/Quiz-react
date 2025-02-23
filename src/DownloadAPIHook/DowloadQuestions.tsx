@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
-import { Question } from "../Types/Type";
+import { Question, Quiz } from "../Types/Type";
 
 export const DownloadQuestions = (): {
-	questions: Question[];
-    setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
+	questions: Quiz[];
+    setQuestions: React.Dispatch<React.SetStateAction<Quiz[]>>;
 	fetchQuestions: () => void;
 } => {
-	const [questions, setQuestions] = useState<Question[]>([]);
+	const [questions, setQuestions] = useState<Quiz[]>([]);
 
 	const API_BASE_URL =
 		process.env.NODE_ENV === "development"
@@ -16,7 +16,7 @@ export const DownloadQuestions = (): {
 	const fetchQuestions = useCallback(async () => {
 		try {
 			const response = await fetch(`${API_BASE_URL}/questions`);
-			const data = await response.json();
+			const data: Quiz[] = await response.json();
 			setQuestions(data);
 		} catch (error) {
 			console.error("Error fetching questions:", error);
