@@ -4,7 +4,7 @@ import { ReturnButton } from "../ReturnButton/ReturnButton";
 import { AddQuestionProps } from '../../Types/Type';
 import { useParams } from "react-router-dom";
 
-const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizCompleted, setCurrentQuestionIndex, setScore }) => {
+const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizCompleted, setCurrentQuestionIndex, setScore }) => {
 	const [visible, setVisible] = useState<boolean>(false);
 	const [questionText, setQuestionText] = useState<string>("");
 	const [answers, setAnswers] = useState([
@@ -22,7 +22,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 	// Funkcja do aktualizacji tekstu odpowiedzi
 	const handleAnswerTextChange = (index: number, newText: string) => {
 		const updatedAnswers = [...answers];
-		updatedAnswers[index].answer = newText; // Zmieniamy tylko tekst odpowiedzi
+		updatedAnswers[index].answer = newText;
 		setAnswers(updatedAnswers);
 	};
 
@@ -37,10 +37,11 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 
 	const quizId = id;
 
-	const SaveQuestion = async () => {
+	const SaveQuestion = async (e: React.FormEvent) => {
+		e.preventDefault();
 		if (questionText && answers.length >= 3) {
 			try {
-				const response = await fetch(`${API_BASE_URL}/questions`, {
+				const response = await fetch(`${API_BASE_URL}/quizzes/${id}/questions`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -48,7 +49,6 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 					body: JSON.stringify({
 						question: questionText,
 						answers,
-						quizId,
 					}),
 				});
 				if (response.ok) {
@@ -59,7 +59,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 						{ answer: "", value: false },
 						{ answer: "", value: false },
 					]);
-					fetchQuestions();
+					fetchQuizzes();
 					setQuizCompleted(false);
 					setScore(0);
 					setCurrentQuestionIndex(0);
@@ -82,13 +82,13 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 	}
 
 	return (
-		<div className="max-w-[350px] m-auto mb-[20px]">
+		<div className="max-w-[350px] m-auto mb-[20px] mt-[40px]">
 			{!visible && (
-				<button className="btn btn-outline btn-success" onClick={() => setVisible(true)}>Dodaj nowe pytanie</button>
+				<button className="btn btn-outline btn-success w-[200px]" onClick={() => setVisible(true)}>Dodaj nowe pytanie</button>
 			)}
 			{visible && (
-				<form>
-					<div className="">
+				<form onSubmit={SaveQuestion}>
+					<div>
 						<div className="m-[10px]">
 							<label htmlFor='question'>Treść pytania:</label>
 							<input
@@ -113,8 +113,8 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuestions, setQuizComple
 						<button
 							className="btn btn-outline ml-[10px]"
 							disabled={handleDisabledButton()}
-							type='button'
-							onClick={SaveQuestion}>
+							type='submit'
+							>
 							Zapisz pytanie
 						</button>
 					</div>

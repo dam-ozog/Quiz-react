@@ -3,13 +3,17 @@ import { NextorFinishButtonProps } from "../../Types/Type";
 export const NextorFinishButton: React.FC<NextorFinishButtonProps> = ({
 	currentQuestionIndex,
 	onClick,
-	questions,
+	quizzes,
+	quizCompleted
 }) => {
+	if (quizCompleted) return null;
 	return (
-		<button className="btn btn-accent " onClick={onClick}>
-			{currentQuestionIndex === questions.length - 1
-				? "Zakończ quiz"
-				: "Następne pytanie"}
-		</button>
+		<div className="flex gap-2">
+			<button className='btn btn-accent' onClick={onClick}>
+				{currentQuestionIndex === quizzes.length - 1
+					? "Zakończ quiz"
+					: "Następne pytanie"}
+			</button>
+		</div>
 	);
 };
