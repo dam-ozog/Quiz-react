@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ReturnButton } from "../ReturnButton/ReturnButton";
-import { DeleteQuestionProps } from "../../Types/Type";
+import { CustomButton } from "../../common/customButton/CustomButton";
+import { DeleteQuestionProps } from "../../../Types/Type";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../constants/apiBaseUrl";
 
 export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 	fetchQuizzes,
@@ -10,11 +11,6 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 	const [showButton, setShowButton] = useState(true);
 	const [deleteIndex, setDeleteIndex] = useState<number>(1);
 	const { id } = useParams();
-
-	const API_BASE_URL =
-		process.env.NODE_ENV === "development"
-			? "http://localhost:5000/api"
-			: "/api";
 
 	const handleShowButton = () => {
 		setShowButton(prevState => !prevState);
@@ -34,7 +30,6 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 		}
 
 		const questionId = quizzes[deleteIndex - 1]._id;
-
 		const questionToDelete = quizzes[deleteIndex - 1];
 		// const quizId = id;
 		// console.log(quizId)
@@ -46,12 +41,9 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 				headers: {
 					"Content-Type": "application/json",
 				},
-				// body: JSON.stringify({ deleteIndex, quizId }), // Wysyłamy numer indeksu
 			}
 		);
-		// console.log(deleteIndex, quizId)
 		if (response.ok) {
-			// const data = await response.json();
 			fetchQuizzes();
 			console.log("Pytanie zostało usunięte: ", questionToDelete.question);
 			alert(`Pytanie o numerze ${deleteIndex} zostało usunięte`);
@@ -68,11 +60,7 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 	return (
 		<div className='max-w-[200px] m-auto'>
 			{showButton && (
-				<button
-					className='btn btn-outline btn-error w-[200px]'
-					onClick={handleShowButton}>
-					Usuń Pytanie
-				</button>
+				<CustomButton className="btn btn-outline btn-error w-[200px]" onClick={handleShowButton} text="Usuń pytanie"/>
 			)}
 			{!showButton && (
 				<div className='flex flex-col gap-[10px]'>
@@ -85,15 +73,9 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 						onChange={e => setDeleteIndex(Number(e.target.value))}
 						className='text-center input input-bordered w-full max-w-xs'
 					/>
-					<button
-						className='btn btn-outline btn-warning'
-						onClick={handleDeleteQuestion}>
-						Usuń
-					</button>
-					<ReturnButton
-						onClick={handleShowButton}
-						text='Cofnij'
-					/>
+					<CustomButton className='btn btn-outline btn-warning'
+						onClick={handleDeleteQuestion} text="Usuń"/>
+					<CustomButton onClick={handleShowButton} className={"btn btn-outline"} text='Cofnij' />
 				</div>
 			)}
 		</div>

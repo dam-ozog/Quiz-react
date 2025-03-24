@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { DownloadQuestions } from "../DownloadAPIHook/DowloadQuestions";
-import { Quiz } from "../Types/Type";
+import { DownloadQuestions } from "../../services/DownloadQuestion/DowloadQuestions";
+import { Quiz } from "../../Types/Type";
 import { useEffect, useState } from "react";
 
 const QuizList = () => {
@@ -32,11 +32,15 @@ const QuizList = () => {
 	return (
 		<div className='text-center'>
 			<ul>
-				{quizzes.map((quiz: Quiz, index) => (
-					<li key={quiz._id || index}>
-						<Link to={`/${quiz._id}`}>{quiz.title}</Link>
-					</li>
-				))}
+				{Array.isArray(quizzes) ? (
+					quizzes.map((quiz: Quiz, index) => (
+						<li key={quiz._id || index}>
+							<Link to={`/${quiz._id}`}>{quiz.title}</Link>
+						</li>
+					))
+				) : (
+					<span>Brak quizów do wyświetlenia.</span>
+				)}
 			</ul>
 		</div>
 	);

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { InputAnswers } from "../InputAnswers/InputAnswers";
-import { ReturnButton } from "../ReturnButton/ReturnButton";
-import { AddQuestionProps } from '../../Types/Type';
+import { CustomButton } from "../../common/customButton/CustomButton";
+import { AddQuestionProps } from "../../../Types/Type";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../constants/apiBaseUrl";
 
-const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizCompleted, setCurrentQuestionIndex, setScore }) => {
+const AddQuestion: React.FC<AddQuestionProps> = ({
+	fetchQuizzes,
+	setQuizInfo,
+}) => {
 	const [visible, setVisible] = useState<boolean>(false);
 	const [questionText, setQuestionText] = useState<string>("");
 	const [answers, setAnswers] = useState([
@@ -13,11 +17,6 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizComplete
 		{ answer: "", value: false },
 	]);
 	const { id } = useParams();
-
-	const API_BASE_URL =
-		process.env.NODE_ENV === "development"
-			? "http://localhost:5000/api"
-			: "/api";
 
 	// Funkcja do aktualizacji tekstu odpowiedzi
 	const handleAnswerTextChange = (index: number, newText: string) => {
@@ -35,22 +34,23 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizComplete
 		setAnswers(updatedAnswers);
 	};
 
-	const quizId = id;
-
 	const SaveQuestion = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (questionText && answers.length >= 3) {
 			try {
-				const response = await fetch(`${API_BASE_URL}/quizzes/${id}/questions`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						question: questionText,
-						answers,
-					}),
-				});
+				const response = await fetch(
+					`${API_BASE_URL}/quizzes/${id}/questions`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							question: questionText,
+							answers,
+						}),
+					}
+				);
 				if (response.ok) {
 					setVisible(false);
 					setQuestionText("");
@@ -60,10 +60,8 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizComplete
 						{ answer: "", value: false },
 					]);
 					fetchQuizzes();
-					setQuizCompleted(false);
-					setScore(0);
-					setCurrentQuestionIndex(0);
-					alert("Pytanie zostało dodane")
+					setQuizInfo({ completed: false, currentQuestionIndex: 0, score: 0 });
+					alert("Pytanie zostało dodane");
 				} else {
 					console.error("Błąd podcas zapisywania pytania");
 				}
@@ -79,44 +77,50 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ fetchQuizzes, setQuizComplete
 			answers.filter(answer => answer.value).length !== 1 ||
 			answers.some(answer => answer.answer.trim() === "")
 		);
-	}
+	};
 
 	return (
-		<div className="max-w-[350px] m-auto mb-[20px] mt-[40px]">
+		<div className='max-w-[350px] m-auto mb-[20px] mt-[40px]'>
 			{!visible && (
-				<button className="btn btn-outline btn-success w-[200px]" onClick={() => setVisible(true)}>Dodaj nowe pytanie</button>
+				<CustomButton
+					className='btn btn-outline btn-success w-[200px]'
+					onClick={() => setVisible(true)}
+					text='Dodaj pytanie'
+				/>
 			)}
 			{visible && (
 				<form onSubmit={SaveQuestion}>
 					<div>
-						<div className="m-[10px]">
+						<div className='m-[10px]'>
 							<label htmlFor='question'>Treść pytania:</label>
 							<input
 								type='text'
 								value={questionText}
 								onChange={e => setQuestionText(e.target.value)}
-								placeholder="Wpisz treść pytania"
-								className="input input-bordered input-primary w-full max-w-xs"
+								placeholder='Wpisz treść pytania'
+								className='input input-bordered input-primary w-full max-w-xs'
 							/>
 						</div>
-						<h4 className="p-[10px] underline underline-offset-2">Odpowiedzi:</h4>
+						<h4 className='p-[10px] underline underline-offset-2'>
+							Odpowiedzi:
+						</h4>
 						<InputAnswers
 							answers={answers}
 							handleCheckboxChange={handleCheckboxChange}
 							handleAnswerTextChange={handleAnswerTextChange}
 						/>
 
-						<ReturnButton
+						<CustomButton
 							onClick={() => setVisible(false)}
+							className={"btn btn-outline"}
 							text={"Cofnij"}
 						/>
-						<button
-							className="btn btn-outline ml-[10px]"
-							disabled={handleDisabledButton()}
+						<CustomButton
+							className='btn btn-outline ml-[20px] w-[150px]'
 							type='submit'
-							>
-							Zapisz pytanie
-						</button>
+							disabled={handleDisabledButton()}
+							text='Zapisz'
+						/>
 					</div>
 				</form>
 			)}

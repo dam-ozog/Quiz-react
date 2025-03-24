@@ -4,15 +4,15 @@ import Quiz from "./models/Quiz.js"; // Import modelu Quiz
 
 dotenv.config({ path: "../.env" });
 
-const DB = process.env.URL;
+const DB_URL = process.env.URL;
 
-if (!DB) {
+if (!DB_URL) {
   console.error(`MongoDB URL is not defined. Set URL environment variable.`);
   process.exit(1);
 }
 
 mongoose
-  .connect(DB)
+  .connect(DB_URL)
   .then(() => {
     console.log("Connection successful...");
     // Tutaj dodaj logikę seedowania
