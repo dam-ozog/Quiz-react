@@ -1,24 +1,20 @@
 import { Link } from "react-router-dom";
 import { DownloadQuestions } from "../../services/DownloadQuestion/DowloadQuestions";
 import { Quiz } from "../../Types/Type";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const QuizList = () => {
 	const { quizzes, fetchQuizzes } = DownloadQuestions();
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		const loadQuizes = async () => {
-			setIsLoading(true);
-			try {
-				await fetchQuizzes();
-			} catch (error) {
-				console.error("Błąd podaczas pobierania quizów", error);
-			} finally {
+		setIsLoading(true)
+		fetchQuizzes()
+			.then(() => setIsLoading(false))
+			.catch(error => {
+				console.error("Błąd pobierania quizów", error);
 				setIsLoading(false);
-			}
-		};
-		loadQuizes();
+			});
 	}, [fetchQuizzes]);
 
 	if (isLoading) {
@@ -46,4 +42,4 @@ const QuizList = () => {
 	);
 };
 
-export default QuizList;
+export default QuizList

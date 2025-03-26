@@ -5,16 +5,17 @@ import { API_BASE_URL } from "../../constants/apiBaseUrl";
 export const DownloadQuestions = (): {
 	quizzes: Quiz[];
 	// setQuestions: React.Dispatch<React.SetStateAction<Quiz[]>>;
-	fetchQuizzes: () => void;
+	fetchQuizzes: () => Promise<void>;
 } => {
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
 	const fetchQuizzes = useCallback(async () => {
-		fetch(`${API_BASE_URL}/quizzes`)
+		return fetch(`${API_BASE_URL}/quizzes`)
 			.then(res => res.json())
 			.then(data => setQuizzes(data))
 			.catch(error => {
 				console.error("Error fetching quizzes:", error);
+				throw error;
 			});
 	}, []);
 

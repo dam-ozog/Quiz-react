@@ -75,7 +75,7 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({
 					/>
 					<CustomButton className='btn btn-outline btn-warning'
 						onClick={handleDeleteQuestion} text="Usuń"/>
-					<CustomButton onClick={handleShowButton} className={"btn btn-outline"} text='Cofnij' />
+					<CustomButton text='Cofnij'  onClick={handleShowButton} className={"btn btn-outline"} />
 				</div>
 			)}
 		</div>

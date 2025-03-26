@@ -8,7 +8,6 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
 	completed,
 	type
 }) => {
-	if (completed) return null;
 	return (
 		<button className={className} onClick={onClick} disabled={disabled} type={type}>
 		{text}

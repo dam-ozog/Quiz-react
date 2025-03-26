@@ -111,15 +111,15 @@ const AddQuestion: React.FC<AddQuestionProps> = ({
 						/>
 
 						<CustomButton
+							text={"Cofnij"}
 							onClick={() => setVisible(false)}
 							className={"btn btn-outline"}
-							text={"Cofnij"}
 						/>
 						<CustomButton
+							text='Zapisz'
 							className='btn btn-outline ml-[20px] w-[150px]'
 							type='submit'
 							disabled={handleDisabledButton()}
-							text='Zapisz'
 						/>
 					</div>
 				</form>

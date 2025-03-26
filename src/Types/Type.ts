@@ -37,23 +37,29 @@ export interface CustomButtonProps {
 	className: string;
 	type?: "submit" | "button" | "reset";
 	disabled?: boolean;
-	completed?: boolean
+	completed?: boolean;
 }
 
-export interface NextorFinishButtonProps {
-	currentQuestionIndex: number;
-	onClick: () => void;
-	quizzes: QuizQuestion[];
-	quizCompleted: boolean;
-}
+// export interface NextorFinishButtonProps {
+// 	currentQuestionIndex: number;
+// 	onClick: () => void;
+// 	quizzes: QuizQuestion[];
+// 	quizCompleted: boolean;
+// }
 
-export interface RepeatQuizButtonProps {
-	onClick: () => void;
-}
+// export interface RepeatQuizButtonProps {
+// 	onClick: () => void;
+// }
 
 export interface AddQuestionProps {
 	fetchQuizzes: () => void;
-	setQuizInfo: Dispatch<SetStateAction<{completed: boolean,currentQuestionIndex: number,score: number}>>
+	setQuizInfo: Dispatch<
+		SetStateAction<{
+			completed: boolean;
+			currentQuestionIndex: number;
+			score: number;
+		}>
+	>;
 }
 
 export interface InputAnswersProps {
@@ -72,3 +78,15 @@ export interface QuizResultProps {
 	score: number;
 	quizQuestions: QuizQuestion[];
 }
+
+export interface QuizStatistic {
+	completed: boolean;
+	score: number;
+	currentQuestionIndex: number;
+}
+
+export const defaultQuizStatistic: QuizStatistic = {
+	completed: false,
+	currentQuestionIndex: 0,
+	score: 0,
+};

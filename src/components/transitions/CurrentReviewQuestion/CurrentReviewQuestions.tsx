@@ -1,5 +1,5 @@
 import React from "react";
-import { CurrentReviewQuestionProps } from "../../Types/Type";
+import { CurrentReviewQuestionProps } from "../../../Types/Type";
 
 export const CurrentReviewQuestion: React.FC<CurrentReviewQuestionProps> = ({
 	currentQuestion,
