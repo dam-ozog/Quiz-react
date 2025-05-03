@@ -1,4 +1,4 @@
-import { QuizResultProps } from "../../Types/Type";
+import { QuizResultProps } from "../../../Types/Type";
 
 export const QuizResult: React.FC<QuizResultProps> = ({
 	quizCompleted,

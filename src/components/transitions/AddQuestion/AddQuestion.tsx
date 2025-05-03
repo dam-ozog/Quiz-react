@@ -113,7 +113,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({
 						<CustomButton
 							text={"Cofnij"}
 							onClick={() => setVisible(false)}
-							className={"btn btn-outline"}
+							className={"btn btn-outline g-[10px]"}
 						/>
 						<CustomButton
 							text='Zapisz'

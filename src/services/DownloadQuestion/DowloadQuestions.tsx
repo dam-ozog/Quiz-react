@@ -4,7 +4,6 @@ import { API_BASE_URL } from "../../constants/apiBaseUrl";
 
 export const DownloadQuestions = (): {
 	quizzes: Quiz[];
-	// setQuestions: React.Dispatch<React.SetStateAction<Quiz[]>>;
 	fetchQuizzes: () => Promise<void>;
 } => {
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);

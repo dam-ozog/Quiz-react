@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { DownloadQuestions } from "../../services/DownloadQuestion/DowloadQuestions";
 import { Quiz } from "../../Types/Type";
-import { Suspense, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
+// import QuizLogo from "/assets/quiz.svg?react";
+
 
 const QuizList = () => {
 	const { quizzes, fetchQuizzes } = DownloadQuestions();
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		setIsLoading(true)
+		setIsLoading(true);
 		fetchQuizzes()
 			.then(() => setIsLoading(false))
 			.catch(error => {
@@ -26,20 +28,21 @@ const QuizList = () => {
 		);
 	}
 	return (
-		<div className='text-center'>
-			<ul>
-				{Array.isArray(quizzes) ? (
+		<div className='mt-[40px]'>
+			<ul className='flex justify-center gap-[30px]'>
+				{Array.isArray(quizzes) &&
 					quizzes.map((quiz: Quiz, index) => (
-						<li key={quiz._id || index}>
-							<Link to={`/${quiz._id}`}>{quiz.title}</Link>
-						</li>
+						<Link key={quiz._id || index} to={`/${quiz._id}`}>
+							<li className='mb-[10px] text-[17px] flex flex-col items-center'>
+								{quiz.title}
+								<img src="/assets/quiz.svg" alt="QuizLogo" className="w-[100px] h-[100px]"/>
+							</li>
+						</Link>
 					))
-				) : (
-					<span>Brak quizów do wyświetlenia.</span>
-				)}
+}
 			</ul>
 		</div>
 	);
 };
 
-export default QuizList
+export default QuizList;

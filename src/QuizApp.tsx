@@ -18,23 +18,6 @@ import {
 	handleRepeatQuiz,
 	handleReturnToBackAnswer,
 } from "./helpers/quizLogic/quizLogic";
-// import {
-// 	checkAnswer,
-// 	resetAnswers,
-// 	updateSelectedAnswer,
-// } from "./helpers/quizHelper/quizLogic";
-
-// interface QuizStatistic {
-// 	completed: boolean;
-// 	score: number;
-// 	currentQuestionIndex: number;
-// }
-
-// const defaultQuizStatistic: QuizStatistic = {
-// 	completed: false,
-// 	currentQuestionIndex: 0,
-// 	score: 0,
-// };
 
 export const QuizApp = () => {
 	const { quizzes, fetchQuizzes } = DownloadQuestions();
@@ -67,58 +50,6 @@ export const QuizApp = () => {
 		}
 	}, [id, quizzes]);
 
-	// const handleAnsweredChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	if (!currentQuiz || !currentQuestion) return;
-
-	// 	const updatedQuestions = updateSelectedAnswer(
-	// 		currentQuiz.questions,
-	// 		currentQuestion._id,
-	// 		e.target.value
-	// 	);
-
-	// 	setCurrentQuiz(prevQuiz => {
-	// 		if (!prevQuiz) return prevQuiz;
-	// 		return { ...prevQuiz, questions: updatedQuestions };
-	// 	});
-	// };
-
-	// const handleNextQuestion = () => {
-	// 	if (!currentQuiz) {
-	// 		console.log("currentQuiz is undefined");
-	// 		return;
-	// 	}
-	// 	if (quizInfo.currentQuestionIndex < currentQuiz.questions.length - 1) {
-	// 		setQuizInfo(prev => ({
-	// 			...prev,
-	// 			currentQuestionIndex: prev.currentQuestionIndex + 1,
-	// 		}));
-	// 	} else {
-	// 		setQuizInfo({
-	// 			completed: true,
-	// 			currentQuestionIndex: 0,
-	// 			score: checkAnswer(currentQuiz.questions),
-	// 		});
-	// 	}
-	// };
-
-	// const handleRepeatQuiz = () => {
-	// 	setQuizInfo(defaultQuizStatistic);
-
-	// 	if (currentQuiz) {
-	// 		setCurrentQuiz({
-	// 			...currentQuiz,
-	// 			questions: resetAnswers(currentQuiz.questions),
-	// 		});
-	// 	}
-	// };
-
-	// const handleReturnToBackAnswer = () => {
-	// 	setQuizInfo(prev => ({
-	// 		...prev,
-	// 		currentQuestionIndex: prev.currentQuestionIndex - 1,
-	// 	}));
-	// };
-
 	let btnText = "Następne pytanie";
 	if (
 		currentQuiz &&
@@ -130,15 +61,15 @@ export const QuizApp = () => {
 	if (!currentQuiz) {
 		return (
 			<div className='text-center'>
-				<p>Ładowanie pytań</p>
+				<p className='text-lg'>Ładowanie pytań</p>
 				<span className='loading loading-bars loading-lg'></span>
 			</div>
 		);
 	}
-	//sprawdzić tailwind
+
 	return (
-		<div className='text-center m-auto p-[2rem] italic text-[20px]'>
-			<h1 className='p-[1rem] text-[34px]'>{currentQuiz.title}</h1>
+		<div className='text-center p-[30px]'>
+			<h1 className='text-center p-[10px] text-[32px]'>{currentQuiz.title}</h1>
 			<CurrentReviewQuestion
 				currentQuestion={currentQuestion}
 				handleAnsweredChange={e =>
@@ -157,7 +88,7 @@ export const QuizApp = () => {
 				{!quizInfo.completed && (
 					<CustomButton
 						text={btnText}
-						className='btn btn-accent'
+						className='btn btn-accent w-[200px]'
 						onClick={() =>
 							handleNextQuestion(currentQuiz, quizInfo, setQuizInfo)
 						}
@@ -170,7 +101,7 @@ export const QuizApp = () => {
 						onClick={() =>
 							handleRepeatQuiz(setQuizInfo, currentQuiz, setCurrentQuiz)
 						}
-						className='btn glass mb-[15px]'
+						className='btn glass m-[15px] w-[200px]'
 					/>
 				)}
 			</div>

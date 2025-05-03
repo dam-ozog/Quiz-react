@@ -1,4 +1,4 @@
-import { InputAnswersProps } from "../../Types/Type";
+import { InputAnswersProps } from "../../../Types/Type";
 
 export const InputAnswers: React.FC<InputAnswersProps> = ({
 	answers,
