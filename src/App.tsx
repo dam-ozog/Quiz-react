@@ -1,7 +1,7 @@
-import { QuizApp } from "./QuizApp/QuizApp";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
-import { Navbar } from "./Navbar/Navbar";
-import QuizList from "./QuizList/QuizList";
+import { QuizApp } from "./QuizApp";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Navbar } from "./layout/Navbar/Navbar";
+import QuizList from "./layout/QuizList/QuizList";
 
 function App() {
 	return (

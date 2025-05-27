@@ -13,6 +13,7 @@ export interface QuizQuestion {
 }
 
 export interface Quiz {
+	length: number;
 	_id: string;
 	title: string;
 	questions: QuizQuestion[];
@@ -25,32 +26,40 @@ export interface AnsweredQuestion {
 }
 
 export interface CurrentReviewQuestionProps {
-	currentQuestion: QuizQuestion;
+	currentQuestion: QuizQuestion | undefined;
 	handleAnsweredChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	quizCompleted: boolean;
 }
 
-export interface ReturnButtonProps {
-	onClick: () => void;
+export interface CustomButtonProps {
+	onClick?: () => void;
 	text: string;
+	className: string;
+	type?: "submit" | "button" | "reset";
+	disabled?: boolean;
+	completed?: boolean;
 }
 
-export interface NextorFinishButtonProps {
-	currentQuestionIndex: number;
-	onClick: () => void;
-	quizzes: QuizQuestion[];
-	quizCompleted: boolean;
-}
+// export interface NextorFinishButtonProps {
+// 	currentQuestionIndex: number;
+// 	onClick: () => void;
+// 	quizzes: QuizQuestion[];
+// 	quizCompleted: boolean;
+// }
 
-export interface RepeatQuizButtonProps {
-	onClick: () => void;
-}
+// export interface RepeatQuizButtonProps {
+// 	onClick: () => void;
+// }
 
 export interface AddQuestionProps {
 	fetchQuizzes: () => void;
-	setQuizCompleted: Dispatch<SetStateAction<boolean>>;
-	setCurrentQuestionIndex: Dispatch<SetStateAction<number>>;
-	setScore: Dispatch<SetStateAction<number>>;
+	setQuizInfo: Dispatch<
+		SetStateAction<{
+			completed: boolean;
+			currentQuestionIndex: number;
+			score: number;
+		}>
+	>;
 }
 
 export interface InputAnswersProps {
@@ -69,3 +78,15 @@ export interface QuizResultProps {
 	score: number;
 	quizQuestions: QuizQuestion[];
 }
+
+export interface QuizStatistic {
+	completed: boolean;
+	score: number;
+	currentQuestionIndex: number;
+}
+
+export const defaultQuizStatistic: QuizStatistic = {
+	completed: false,
+	currentQuestionIndex: 0,
+	score: 0,
+};

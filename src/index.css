@@ -1,5 +1,2 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
-
-/* @import "daisyui/dist/full.css"; */
